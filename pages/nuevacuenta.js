@@ -1,9 +1,25 @@
 import React from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
+import { useQuery, gql } from "@apollo/client";
 import * as Yup from "yup";
 
+const QUERY = gql`
+  query obtenerProductos {
+    obtenerProductos {
+      id
+      nombre
+      precio
+      existencia
+    }
+  }
+`;
+
 const NuevaCuenta = () => {
+  // Obtener productos de Graphql
+
+  const { data } = useQuery(QUERY);
+  console.log(data);
   // Validacion del Formulario
 
   const formik = useFormik({
