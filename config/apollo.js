@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://localhots:4000/",
+    uri: "http://localhost:4000",
     fetch,
   }),
 });

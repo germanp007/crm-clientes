@@ -1,26 +1,24 @@
 import React from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
-import { useQuery, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import * as Yup from "yup";
 
-const QUERY = gql`
-  query obtenerProductos {
-    obtenerProductos {
+const NUEVA_CUENTA = gql`
+  mutation nuevoUsuario($input: UsuarioInput) {
+    nuevoUsuario(input: $input) {
       id
       nombre
-      precio
-      existencia
+      apellido
+      email
     }
   }
 `;
 
 const NuevaCuenta = () => {
-  // Obtener productos de Graphql
+  // Mutacion para crear nuevos usuarios
 
-  const { data } = useQuery(QUERY);
-  console.log(data);
-  // Validacion del Formulario
+  const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
 
   const formik = useFormik({
     initialValues: {
@@ -39,9 +37,23 @@ const NuevaCuenta = () => {
         .required("El password es obligatorio")
         .min(6, "El password debe ser de almenos 6 caracteres"),
     }),
-    onSubmit: (valores) => {
-      console.log("enviando");
+    onSubmit: async (valores) => {
       console.log(valores);
+      const { nombre, apellido, email, password } = valores;
+      try {
+        await nuevoUsuario({
+          variables: {
+            input: {
+              nombre,
+              apellido,
+              email,
+              password,
+            },
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
   return (
