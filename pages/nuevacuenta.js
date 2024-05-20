@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import { useMutation, gql } from "@apollo/client";
@@ -16,9 +16,15 @@ const NUEVA_CUENTA = gql`
 `;
 
 const NuevaCuenta = () => {
+  // State para el mensaje
+
+  const [mensaje, setMensaje] = useState(null);
+
   // Mutacion para crear nuevos usuarios
 
   const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
+
+  // Validacion del Formulario
 
   const formik = useFormik({
     initialValues: {
@@ -53,13 +59,27 @@ const NuevaCuenta = () => {
         });
         console.log(data);
       } catch (error) {
-        console.error(error);
+        setMensaje(error.message);
+        setTimeout(() => {
+          setMensaje(null);
+        }, 3000);
       }
     },
   });
+
+  // if loading
+
+  const monstrarMensaje = () => {
+    return (
+      <div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+        <p className="text-red-600">{mensaje}</p>
+      </div>
+    );
+  };
   return (
     <Layout>
       <div className="flex flex-col w-screen">
+        {mensaje && monstrarMensaje()}
         <h1 className="text-2xl text-white font-light text-center">
           Crear Nueva Cuenta
         </h1>
