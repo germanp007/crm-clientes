@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import { useMutation, gql } from "@apollo/client";
@@ -19,6 +20,10 @@ const NuevaCuenta = () => {
   // State para el mensaje
 
   const [mensaje, setMensaje] = useState(null);
+
+  // Routing
+
+  const router = useRouter();
 
   // Mutacion para crear nuevos usuarios
 
@@ -58,6 +63,16 @@ const NuevaCuenta = () => {
           },
         });
         console.log(data);
+        // usuario creado correctamente
+
+        setMensaje(
+          `Se creo el usurio correctamente ${data.nuevoUsuario.nombre}`
+        );
+        setTimeout(() => {
+          setMensaje(null);
+          // redirigir al login
+          router.push("/login");
+        }, 3000);
       } catch (error) {
         setMensaje(error.message);
         setTimeout(() => {
