@@ -41,7 +41,7 @@ const NuevaCuenta = () => {
       console.log(valores);
       const { nombre, apellido, email, password } = valores;
       try {
-        await nuevoUsuario({
+        const { data } = await nuevoUsuario({
           variables: {
             input: {
               nombre,
@@ -51,6 +51,7 @@ const NuevaCuenta = () => {
             },
           },
         });
+        console.log(data);
       } catch (error) {
         console.error(error);
       }
