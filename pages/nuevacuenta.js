@@ -49,7 +49,6 @@ const NuevaCuenta = () => {
         .min(6, "El password debe ser de almenos 6 caracteres"),
     }),
     onSubmit: async (valores) => {
-      console.log(valores);
       const { nombre, apellido, email, password } = valores;
       try {
         const { data } = await nuevoUsuario({
@@ -74,6 +73,7 @@ const NuevaCuenta = () => {
           router.push("/login");
         }, 3000);
       } catch (error) {
+        console.log(error);
         setMensaje(error.message);
         setTimeout(() => {
           setMensaje(null);

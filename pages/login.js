@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutation, gql } from "@apollo/client";
+
+const AUTH_USUARIO = gql`
+  mutation autenticarUsuario($input: AutenticarInput) {
+    autenticarUsuario(input: $input) {
+      token
+    }
+  }
+`;
 const Login = () => {
+  // State para el mensaje
+
+  const [mensaje, setMensaje] = useState(null);
+
+  // Mutation para logear usuarios en el server
+
+  const [autenticarUsuario] = useMutation(AUTH_USUARIO);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -14,14 +30,42 @@ const Login = () => {
         .required("este campo no puede ir vacio"),
       password: Yup.string().required("el password es obligatorio"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const { email, password } = values;
+      try {
+        const { data } = await autenticarUsuario({
+          variables: {
+            input: {
+              email,
+              password,
+            },
+          },
+        });
+        console.log(data);
+        // Usuario Logeado correctamente
+
+        // setMensaje(`Bienvenido ${data.email}`);
+      } catch (error) {
+        console.log(error.message);
+        // setMensaje(`${error.message}`);
+      }
     },
   });
+
+  // if loading
+
+  const monstrarMensaje = () => {
+    return (
+      <div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+        <p className="text-red-600">{mensaje}</p>
+      </div>
+    );
+  };
   return (
     <Layout>
       <div className="flex flex-col w-screen">
         <h1 className="text-2xl text-white font-light text-center">Login</h1>
+        {mensaje && monstrarMensaje()}
         <div className="flex justify-center mt-5">
           <div className="w-full max-w-sm ">
             <form
