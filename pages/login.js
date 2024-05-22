@@ -70,7 +70,7 @@ const Login = () => {
         setTimeout(() => {
           setMensaje(null);
           // redirigir al login
-          router.push("/clientes");
+          router.push("/");
         }, 3000);
       } catch (error) {
         console.log(error);
