@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
+import { useRouter } from "next/router";
 
 const AUTH_USUARIO = gql`
   mutation autenticarUsuario($input: AutenticarInput) {
@@ -12,6 +13,7 @@ const AUTH_USUARIO = gql`
   }
 `;
 const Login = () => {
+  const router = useRouter();
   // State para el mensaje
 
   const [mensaje, setMensaje] = useState(null);
@@ -32,6 +34,7 @@ const Login = () => {
     }),
     onSubmit: async (values) => {
       const { email, password } = values;
+      console.log(values);
       try {
         const { data } = await autenticarUsuario({
           variables: {
@@ -41,17 +44,41 @@ const Login = () => {
             },
           },
         });
-        console.log(data);
+        if (!data.autenticarUsuario) {
+          setMensaje(`El Usuario no existe`);
+          setTimeout(() => {
+            setMensaje(null);
+            // redirigir al login
+          }, 3000);
+          throw new Error("ERROR");
+        }
+        // if (!data.autenticarUsuario.token) {
+        //   setMensaje(`El Password es incorrecto`);
+        //   setTimeout(() => {
+        //     setMensaje(null);
+        //     // redirigir al login
+        //   }, 3000);
+        //   throw new Error("ERROR");
+        // }
         // Usuario Logeado correctamente
-
-        // setMensaje(`Bienvenido ${data.email}`);
+        console.log(data);
+        setMensaje("Autenticando...");
+        // Guardar el token en LocalStorage
+        const { token } = data.autenticarUsuario;
+        localStorage.setItem("token", token);
+        //  Redireccionar a Clientes
+        setTimeout(() => {
+          setMensaje(null);
+          // redirigir al login
+          router.push("/clientes");
+        }, 3000);
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
         // setMensaje(`${error.message}`);
       }
     },
   });
-
+  console.log(mensaje);
   // if loading
 
   const monstrarMensaje = () => {
