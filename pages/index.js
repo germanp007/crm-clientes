@@ -42,12 +42,8 @@ export default function Home() {
                 <td className="border px-4 py-2">
                   {cliente.nombre} {cliente.apellido}
                 </td>
-                <td className="border px-4 py-2">
-                  {cliente.nombre} {cliente.empresa}
-                </td>
-                <td className="border px-4 py-2">
-                  {cliente.nombre} {cliente.email}
-                </td>
+                <td className="border px-4 py-2">{cliente.empresa}</td>
+                <td className="border px-4 py-2">{cliente.email}</td>
               </tr>
             ))}
           </tbody>
