@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
 
@@ -15,11 +16,15 @@ const OBTENER_CLIENTES_USUARIOS = gql`
 
 export default function Home() {
   // Consulta de Apollo
-
-  const { data, loading, error } = useQuery(OBTENER_CLIENTES_USUARIOS);
+  const router = useRouter();
+  const { data, loading, error, client } = useQuery(OBTENER_CLIENTES_USUARIOS);
 
   if (loading) {
     return <p>Cargando...</p>;
+  }
+  if (!data) {
+    client.clearStore();
+    return router.push("/login");
   }
   console.log(data);
   console.log(loading);
