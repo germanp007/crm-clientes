@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Sidebar from "../components/Sidebar";
+
 const Layout = ({ children }) => {
   const router = useRouter();
   return (

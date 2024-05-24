@@ -44,8 +44,8 @@ const Login = () => {
             },
           },
         });
-        if (!data.autenticarUsuario) {
-          setMensaje(`El Usuario no existe`);
+        if (!data?.autenticarUsuario) {
+          setMensaje(`El Usuario o Password son incorrectos`);
           setTimeout(() => {
             setMensaje(null);
             // redirigir al login
