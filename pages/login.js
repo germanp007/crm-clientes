@@ -52,14 +52,7 @@ const Login = () => {
           }, 3000);
           throw new Error("ERROR");
         }
-        // if (!data.autenticarUsuario.token) {
-        //   setMensaje(`El Password es incorrecto`);
-        //   setTimeout(() => {
-        //     setMensaje(null);
-        //     // redirigir al login
-        //   }, 3000);
-        //   throw new Error("ERROR");
-        // }
+
         // Usuario Logeado correctamente
         console.log(data);
         setMensaje("Autenticando...");
@@ -78,8 +71,6 @@ const Login = () => {
       }
     },
   });
-  console.log(mensaje);
-  // if loading
 
   const monstrarMensaje = () => {
     return (

@@ -1,7 +1,23 @@
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
+import { useMutation, gql } from "@apollo/client";
 import * as Yup from "yup";
+
+const NUEVO_CLIENTE = gql`
+  mutation nuevoCliente($input: ClienteInput) {
+    nuevoCliente(input: $input) {
+      nombre
+      apellido
+      empresa
+      email
+      telefono
+    }
+  }
+`;
 const NuevoCliente = () => {
+  // Mutation para crear nuevos clientes
+
+  const [nuevoCliente] = useMutation(NUEVO_CLIENTE);
   const formik = useFormik({
     initialValues: {
       nombre: "",
@@ -15,9 +31,28 @@ const NuevoCliente = () => {
       apellido: Yup.string().required("El apellido del cliente es obligatorio"),
       empresa: Yup.string().required("La empresa del cliente es obligatorio"),
       email: Yup.string().required("El email del cliente es obligatorio"),
+      telefono: Yup.string().required("El telefono del cliente es obligatorio"),
     }),
-    onSubmit: (valores) => {
+    onSubmit: async (valores) => {
       console.log(valores);
+      const { nombre, apellido, empresa, email, telefono } = valores;
+
+      try {
+        const { data } = await nuevoCliente({
+          variables: {
+            input: {
+              nombre,
+              apellido,
+              empresa,
+              email,
+              telefono,
+            },
+          },
+        });
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   return (
@@ -27,7 +62,7 @@ const NuevoCliente = () => {
         <div className="w-full max-w-lg">
           <form
             className="bg-white shadow-md px-8 pt-6 pb-8 mb-4"
-            onSubmit={formik.handleSubmithandles}
+            onSubmit={formik.handleSubmit}
           >
             <div className="mb-4">
               <label
@@ -137,6 +172,12 @@ const NuevoCliente = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.telefono}
               ></input>
+              {formik.touched.telefono && formik.errors.telefono ? (
+                <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                  <p className="font-bold">Error</p>
+                  <p>{formik.errors.telefono}</p>
+                </div>
+              ) : null}
             </div>
             <input
               type="submit"
