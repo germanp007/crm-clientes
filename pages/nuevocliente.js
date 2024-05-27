@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import { useMutation, gql } from "@apollo/client";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 
 const NUEVO_CLIENTE = gql`
@@ -16,7 +17,7 @@ const NUEVO_CLIENTE = gql`
 `;
 const NuevoCliente = () => {
   // Mutation para crear nuevos clientes
-
+  const router = useRouter();
   const [nuevoCliente] = useMutation(NUEVO_CLIENTE);
   const formik = useFormik({
     initialValues: {
@@ -50,6 +51,7 @@ const NuevoCliente = () => {
           },
         });
         console.log(data);
+        router.push("/");
       } catch (error) {
         console.log(error);
       }
