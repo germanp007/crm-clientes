@@ -11,34 +11,66 @@ const Cliente = ({ cliente }) => {
   const [eliminarCliente] = useMutation(ELIMINAR_CLIENTE);
   const { nombre, apellido, empresa, email, id } = cliente;
 
+  //   const confirmarEliminarCliente = (id) => {
+  //     Swal.fire({
+  //       title: "Deseas eliminar a este cliente?",
+  //       text: "Esta acción no se puede deshacer!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Si, Eliminar!",
+  //     }).then(async (result) => {
+  //       if (result.isConfirmed)
+  //         try {
+  //           const { data } = await eliminarCliente({
+  //             variables: {
+  //               id,
+  //             },
+  //           });
+  //           console.log(data);
+  //           // Mensaje de Elimido
+  //           Swal.fire({
+  //             title: "Eliminado!",
+  //             text: "Your file has been deleted.",
+  //             icon: "success",
+  //           });
+  //         } catch (error) {
+  //           console.log(error.message);
+  //         }
+  //     });
+  //   };
   const confirmarEliminarCliente = (id) => {
     Swal.fire({
-      title: "Deseas eliminar a este cliente?",
-      text: "Esta acción no se puede deshacer!",
+      title: "¿Deseas eliminar a este cliente?",
+      text: "¡Esta acción no se puede deshacer!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Eliminar!",
+      confirmButtonText: "Sí, Eliminar!",
     }).then(async (result) => {
-      console.log(result);
-      if (result.value)
+      if (result.isConfirmed) {
         try {
           const { data } = await eliminarCliente({
-            variables: {
-              id,
-            },
+            variables: { id },
           });
           console.log(data);
-          // Mensaje de Elimido
+          // Mensaje de eliminado
           Swal.fire({
-            title: "Eliminado!",
-            text: "Your file has been deleted.",
+            title: "¡Eliminado!",
+            text: "El cliente ha sido eliminado.",
             icon: "success",
           });
         } catch (error) {
-          console.log(error);
+          console.log(error.message);
+          Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al eliminar el cliente.",
+            icon: "error",
+          });
         }
+      }
     });
   };
   return (
@@ -52,7 +84,7 @@ const Cliente = ({ cliente }) => {
         <button
           className="flex justify-center gap-4 items-center bg-red-800 text-white font-bold py-1 px-4 rounded-md m-auto"
           type="button"
-          onClick={() => confirmarEliminarCliente(id)}
+          onClick={(id) => confirmarEliminarCliente(id)}
         >
           Eliminar
           <svg
