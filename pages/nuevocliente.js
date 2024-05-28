@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { useMutation, gql } from "@apollo/client";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
+import { useState } from "react";
 
 const NUEVO_CLIENTE = gql`
   mutation nuevoCliente($input: ClienteInput) {
@@ -27,6 +28,7 @@ const OBTENER_CLIENTES_USUARIOS = gql`
   }
 `;
 const NuevoCliente = () => {
+  const [mensaje, setMensaje] = useState(null);
   // Mutation para crear nuevos clientes
   const router = useRouter();
   const [nuevoCliente] = useMutation(NUEVO_CLIENTE, {
@@ -78,13 +80,22 @@ const NuevoCliente = () => {
         console.log(data);
         router.push("/");
       } catch (error) {
-        console.log(error);
+        setMensaje(error.message);
+        console.log(error.message);
       }
     },
   });
+  const monstrarMensaje = () => {
+    return (
+      <div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+        <p className="text-red-600">{mensaje}</p>
+      </div>
+    );
+  };
   return (
     <Layout>
       <h1>Nuevo Cliente</h1>
+      {mensaje && monstrarMensaje()}
       <div className="flex justify-center mt-5">
         <div className="w-full max-w-lg">
           <form
