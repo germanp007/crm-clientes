@@ -34,7 +34,7 @@ const Login = () => {
     }),
     onSubmit: async (values) => {
       const { email, password } = values;
-      console.log(values);
+
       try {
         const { data } = await autenticarUsuario({
           variables: {
@@ -50,7 +50,7 @@ const Login = () => {
             setMensaje(null);
             // redirigir al login
           }, 3000);
-          throw new Error("ERROR");
+          throw new Error(`ERROR El Usuario o Password son incorrectos`);
         }
 
         // Usuario Logeado correctamente
