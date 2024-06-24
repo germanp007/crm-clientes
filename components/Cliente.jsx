@@ -2,8 +2,8 @@ import Swal from "sweetalert2";
 import { gql, useMutation } from "@apollo/client";
 
 const ELIMINAR_CLIENTE = gql`
-  mutation Mutation($eliminarClienteId: ID!) {
-    eliminarCliente(id: $eliminarClienteId)
+  mutation Mutation($id: ID!) {
+    eliminarCliente(id: $id)
   }
 `;
 const Cliente = ({ cliente }) => {
