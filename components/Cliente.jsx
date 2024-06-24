@@ -10,36 +10,6 @@ const Cliente = ({ cliente }) => {
   // Mutation para eliminar cliente
   const [eliminarCliente] = useMutation(ELIMINAR_CLIENTE);
   const { nombre, apellido, empresa, email, id } = cliente;
-
-  //   const confirmarEliminarCliente = (id) => {
-  //     Swal.fire({
-  //       title: "Deseas eliminar a este cliente?",
-  //       text: "Esta acción no se puede deshacer!",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#3085d6",
-  //       cancelButtonColor: "#d33",
-  //       confirmButtonText: "Si, Eliminar!",
-  //     }).then(async (result) => {
-  //       if (result.isConfirmed)
-  //         try {
-  //           const { data } = await eliminarCliente({
-  //             variables: {
-  //               id,
-  //             },
-  //           });
-  //           console.log(data);
-  //           // Mensaje de Elimido
-  //           Swal.fire({
-  //             title: "Eliminado!",
-  //             text: "Your file has been deleted.",
-  //             icon: "success",
-  //           });
-  //         } catch (error) {
-  //           console.log(error.message);
-  //         }
-  //     });
-  //   };
   const confirmarEliminarCliente = (id) => {
     Swal.fire({
       title: "¿Deseas eliminar a este cliente?",
@@ -50,10 +20,12 @@ const Cliente = ({ cliente }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, Eliminar!",
     }).then(async (result) => {
-      if (result.isConfirmed) {
+      if (result.value) {
+        console.log("eliminando...", id);
         try {
+          // Eliminar por ID
           const { data } = await eliminarCliente({
-            variables: { id },
+            variables: { id: id },
           });
           console.log(data);
           // Mensaje de eliminado
@@ -70,6 +42,8 @@ const Cliente = ({ cliente }) => {
             icon: "error",
           });
         }
+      } else {
+        console.log("no se elimino", id);
       }
     });
   };
@@ -84,7 +58,7 @@ const Cliente = ({ cliente }) => {
         <button
           className="flex justify-center gap-4 items-center bg-red-800 text-white font-bold py-1 px-4 rounded-md m-auto"
           type="button"
-          onClick={(id) => confirmarEliminarCliente(id)}
+          onClick={() => confirmarEliminarCliente(id)}
         >
           Eliminar
           <svg

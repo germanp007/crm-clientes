@@ -28,9 +28,7 @@ export default function Home() {
     client.clearStore();
     return router.push("/login");
   }
-  // console.log(data);
-  // console.log(loading);
-  // console.log(error);
+
   return (
     <div>
       <Layout>
@@ -46,7 +44,7 @@ export default function Home() {
             <tr className="text-white ">
               <th className="w-1/5 py-2 ">Nombre</th>
               <th className="w-1/5 py-2 ">Empresa</th>
-              <th className="w-1/5 py-2">EMail</th>
+              <th className="w-1/5 py-2">Email</th>
               <th className="w-1/5 py-2">Eliminar</th>
             </tr>
           </thead>
