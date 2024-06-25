@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { gql, useMutation } from "@apollo/client";
-
+import Router from "next/router";
 const ELIMINAR_CLIENTE = gql`
   mutation Mutation($id: ID!) {
     eliminarCliente(id: $id)
@@ -75,6 +75,13 @@ const Cliente = ({ cliente }) => {
       }
     });
   };
+
+  const editarCliente = (id) => {
+    Router.push({
+      pathname: "/editarcliente/[id]",
+      query: { id },
+    });
+  };
   return (
     <tr>
       <td className="border px-4 py-2">
@@ -89,6 +96,27 @@ const Cliente = ({ cliente }) => {
           onClick={() => confirmarEliminarCliente(id)}
         >
           Eliminar
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="size-6"
+            fill="white"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </td>
+      <td className="border px-4 py-2 ">
+        <button
+          className="flex justify-center gap-4 items-center bg-green-600 text-white font-bold py-1 px-4 rounded-md m-auto"
+          type="button"
+          onClick={() => editarCliente(id)}
+        >
+          Editar
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
