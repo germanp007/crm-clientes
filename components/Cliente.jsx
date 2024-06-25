@@ -6,9 +6,38 @@ const ELIMINAR_CLIENTE = gql`
     eliminarCliente(id: $id)
   }
 `;
+
+const OBTENER_CLIENTES_USUARIOS = gql`
+  query obtenerClientesVendedor {
+    obtenerClienteVendedor {
+      id
+      nombre
+      apellido
+      empresa
+      email
+    }
+  }
+`;
 const Cliente = ({ cliente }) => {
   // Mutation para eliminar cliente
-  const [eliminarCliente] = useMutation(ELIMINAR_CLIENTE);
+  const [eliminarCliente] = useMutation(ELIMINAR_CLIENTE, {
+    update(cache) {
+      // optener una copia del objeto de cache
+      const { obtenerClienteVendedor } = cache.readQuery({
+        query: OBTENER_CLIENTES_USUARIOS,
+      });
+      console.log(obtenerClienteVendedor);
+      // reescribir el chache
+      cache.writeQuery({
+        query: OBTENER_CLIENTES_USUARIOS,
+        data: {
+          obtenerClienteVendedor: obtenerClienteVendedor.filter(
+            (clienteActual) => clienteActual.id !== id
+          ),
+        },
+      });
+    },
+  });
   const { nombre, apellido, empresa, email, id } = cliente;
   const confirmarEliminarCliente = (id) => {
     Swal.fire({
@@ -21,7 +50,6 @@ const Cliente = ({ cliente }) => {
       confirmButtonText: "Sí, Eliminar!",
     }).then(async (result) => {
       if (result.value) {
-        console.log("eliminando...", id);
         try {
           // Eliminar por ID
           const { data } = await eliminarCliente({
@@ -31,7 +59,7 @@ const Cliente = ({ cliente }) => {
           // Mensaje de eliminado
           Swal.fire({
             title: "¡Eliminado!",
-            text: "El cliente ha sido eliminado.",
+            text: "Cliente eliminado",
             icon: "success",
           });
         } catch (error) {

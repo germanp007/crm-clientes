@@ -77,7 +77,6 @@ const NuevoCliente = () => {
             },
           },
         });
-        console.log(data);
         router.push("/");
       } catch (error) {
         setMensaje(error.message);
