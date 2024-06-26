@@ -3,6 +3,7 @@ import React from "react";
 import Layout from "../../components/Layout";
 import { useQuery, gql } from "@apollo/client";
 import { Formik } from "formik";
+import * as Yup from "yup";
 const EditarCliente = () => {
   // obtener Cliente por ID
   const OBTENER_CLIENTE = gql`
@@ -28,14 +29,21 @@ const EditarCliente = () => {
     },
   });
   if (loading) return "Cargando...";
+  const validationSchema = Yup.object({
+    nombre: Yup.string().required("El nombre del cliente es obligatorio"),
+    apellido: Yup.string().required("El apellido del cliente es obligatorio"),
+    empresa: Yup.string().required("La empresa del cliente es obligatorio"),
+    email: Yup.string().required("El email del cliente es obligatorio"),
+    telefono: Yup.string().required("El telefono del cliente es obligatorio"),
+  });
+
   return (
     <Layout>
       <h1>Editar Cliente</h1>
       <div className="flex justify-center mt-5">
         <div className="w-full max-w-lg">
-          <Formik>
+          <Formik validationSchema={validationSchema}>
             {(props) => {
-              console.log(props);
               return (
                 <form
                   className="bg-white shadow-md px-8 pt-6 pb-8 mb-4"
@@ -57,12 +65,12 @@ const EditarCliente = () => {
                       // onBlur={formik.handleBlur}
                       // value={formik.values.nombre}
                     ></input>
-                    {/* {formik.touched.nombre && formik.errors.nombre ? (
-                <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p className="font-bold">Error</p>
-                  <p>{formik.errors.nombre}</p>
-                </div>
-              ) : null} */}
+                    {props.touched.nombre && props.errors.nombre ? (
+                      <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                        <p className="font-bold">Error</p>
+                        <p>{props.errors.nombre}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="mb-4">
                     <label
@@ -80,12 +88,12 @@ const EditarCliente = () => {
                       onBlur={props.handleBlur}
                       // value={formik.values.apellido}
                     ></input>
-                    {/* {formik.touched.apellido && formik.errors.apellido ? (
-                <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p className="font-bold">Error</p>
-                  <p>{formik.errors.apellido}</p>
-                  </div>
-                  ) : null} */}
+                    {props.touched.apellido && props.errors.apellido ? (
+                      <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                        <p className="font-bold">Error</p>
+                        <p>{props.errors.apellido}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="mb-4">
                     <label
@@ -103,12 +111,12 @@ const EditarCliente = () => {
                       onBlur={props.handleBlur}
                       // value={formik.values.empresa}
                     ></input>
-                    {/* {formik.touched.empresa && formik.errors.empresa ? (
-                <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p className="font-bold">Error</p>
-                  <p>{formik.errors.empresa}</p>
-                </div>
-              ) : null} */}
+                    {props.touched.empresa && props.errors.empresa ? (
+                      <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                        <p className="font-bold">Error</p>
+                        <p>{props.errors.empresa}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="mb-4">
                     <label
@@ -126,12 +134,12 @@ const EditarCliente = () => {
                       onBlur={props.handleBlur}
                       // value={formik.values.email}
                     ></input>
-                    {/* {formik.touched.email && formik.errors.email ? (
-                <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p className="font-bold">Error</p>
-                  <p>{formik.errors.email}</p>
-                </div>
-              ) : null} */}
+                    {props.touched.email && props.errors.email ? (
+                      <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                        <p className="font-bold">Error</p>
+                        <p>{props.errors.email}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="mb-4">
                     <label
@@ -149,12 +157,12 @@ const EditarCliente = () => {
                       onBlur={props.handleBlur}
                       // value={formik.values.telefono}
                     ></input>
-                    {/* {formik.touched.telefono && formik.errors.telefono ? (
-                <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p className="font-bold">Error</p>
-                  <p>{formik.errors.telefono}</p>
-                </div>
-              ) : null} */}
+                    {props.touched.telefono && props.errors.telefono ? (
+                      <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                        <p className="font-bold">Error</p>
+                        <p>{props.errors.telefono}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <input
                     type="submit"
