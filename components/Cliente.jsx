@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { gql, useMutation } from "@apollo/client";
 import Router from "next/router";
+
 const ELIMINAR_CLIENTE = gql`
   mutation Mutation($id: ID!) {
     eliminarCliente(id: $id)
@@ -123,7 +124,7 @@ const Cliente = ({ cliente }) => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            class="size-6"
+            className="size-6"
           >
             <path
               strokeLinecap="round"
