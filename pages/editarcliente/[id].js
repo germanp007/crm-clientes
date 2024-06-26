@@ -4,6 +4,7 @@ import Layout from "../../components/Layout";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 const EditarCliente = () => {
   // obtener Cliente por ID
 
@@ -83,8 +84,12 @@ const EditarCliente = () => {
       });
       console.log(data);
       // Mensaje de Actualizacion SweetAlert
+      Swal.fire("¡Actualiado!", "Cliente actualizado exitosamente", "success");
       // Redireccionar al Usuario
-      window.location.href = "/";
+      // router.push("/clientes");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
