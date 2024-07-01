@@ -1,19 +1,86 @@
-import { ProvidedRequiredArgumentsRule } from "graphql";
 import React from "react";
+import Swal from "sweetalert2";
+import { gql, useMutation } from "@apollo/client";
 
+const ELIMINAR_PRODUCTO = gql`
+  mutation eliminarProducto($id: ID!) {
+    eliminarProducto(id: $id)
+  }
+`;
+const OBTENER_PRODUCTOS = gql`
+  query ObtenerProductos {
+    obtenerProductos {
+      id
+      nombre
+      existencia
+      precio
+    }
+  }
+`;
 const Producto = ({ producto }) => {
-  console.log(producto);
-  const { nombre, existencia, precio } = producto;
+  const { id, nombre, existencia, precio } = producto;
+
+  // Mutation para eliminar productos
+  const [eliminarProducto] = useMutation(ELIMINAR_PRODUCTO, {
+    update(cache) {
+      //Obtener primero el listado de productos del chache
+      const { obtenerProductos } = cache.readQuery({
+        query: OBTENER_PRODUCTOS,
+      });
+
+      //Reescribir el listado de productos
+      cache.writeQuery({
+        query: OBTENER_PRODUCTOS,
+        data: {
+          obtenerProductos: obtenerProductos.filter(
+            (producto) => producto.id !== id
+          ),
+        },
+      });
+    },
+  });
+
+  const confirmarEliminarProducto = () => {
+    Swal.fire({
+      title: "¿Deseas eliminar a este producto?",
+      text: "¡Esta acción no se puede deshacer!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, Eliminar!",
+    }).then(async (result) => {
+      if (result.value) {
+        try {
+          const { data } = await eliminarProducto({
+            variables: {
+              id,
+            },
+          });
+          console.log(data);
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "Producto eliminado",
+            icon: "success",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        console.log("no se elimino", id);
+      }
+    });
+  };
   return (
     <tr>
       <td className="border px-4 py-2">{nombre}</td>
       <td className="border px-4 py-2">{existencia}</td>
-      <td className="border px-4 py-2">{precio}</td>
+      <td className="border px-4 py-2">$ {precio}</td>
       <td className="border px-4 py-2 ">
         <button
           className="flex justify-center gap-4 items-center bg-red-800 text-white font-bold py-1 px-4 rounded-md m-auto"
           type="button"
-          //   onClick={() => confirmarEliminarCliente(id)}
+          onClick={() => confirmarEliminarProducto(id)}
         >
           Eliminar
           <svg
