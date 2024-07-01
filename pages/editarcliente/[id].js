@@ -100,6 +100,7 @@ const EditarCliente = () => {
       <h1>Editar Cliente</h1>
       <div className="flex justify-center mt-5">
         <div className="w-full max-w-lg">
+          {/* Cuando Se tiene Datos previos se recomienda usar el componente Formik, pero cuando no se tienen datos previos como creacion de cliente, es mejor usar useFormik */}
           <Formik
             validationSchema={validationSchema}
             enableReinitialize

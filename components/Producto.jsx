@@ -27,7 +27,6 @@ const Producto = ({ producto }) => {
       const { obtenerProductos } = cache.readQuery({
         query: OBTENER_PRODUCTOS,
       });
-
       //Reescribir el listado de productos
       cache.writeQuery({
         query: OBTENER_PRODUCTOS,

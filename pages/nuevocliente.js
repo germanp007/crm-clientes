@@ -62,7 +62,6 @@ const NuevoCliente = () => {
       telefono: Yup.string().required("El telefono del cliente es obligatorio"),
     }),
     onSubmit: async (valores) => {
-      console.log(valores);
       const { nombre, apellido, empresa, email, telefono } = valores;
 
       try {
