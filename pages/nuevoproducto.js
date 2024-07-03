@@ -16,11 +16,35 @@ const NUEVO_PRODUCTO = gql`
     }
   }
 `;
-
+const OBTENER_PRODUCTOS = gql`
+  query ObtenerProductos {
+    obtenerProductos {
+      id
+      nombre
+      existencia
+      precio
+    }
+  }
+`;
 const NuevoProducto = () => {
   const router = useRouter();
-  const [nuevoProducto] = useMutation(NUEVO_PRODUCTO);
+  const [nuevoProducto] = useMutation(NUEVO_PRODUCTO, {
+    update(cache, { data: { nuevoProducto } }) {
+      // Obtener el objeto Cache
 
+      const { obtenerProductos } = cache.readQuery({
+        query: OBTENER_PRODUCTOS,
+      });
+
+      // Reescribir el objeto Cache
+      cache.writeQuery({
+        query: OBTENER_PRODUCTOS,
+        data: {
+          obtenerProductos: [...obtenerProductos, nuevoProducto],
+        },
+      });
+    },
+  });
   //Formulario nuevos productos
 
   const formik = useFormik({
