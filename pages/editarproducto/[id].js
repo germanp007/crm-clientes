@@ -1,9 +1,10 @@
 import React from "react";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 
 const OBTENER_PRODUCTO = gql`
   query obtenerProducto($id: ID!) {
@@ -11,6 +12,17 @@ const OBTENER_PRODUCTO = gql`
       nombre
       precio
       existencia
+    }
+  }
+`;
+
+const ACTUALIZAR_PRODUCTO = gql`
+  mutation actualizarProducto($id: ID!, $input: ProductoInput) {
+    actualizarProducto(id: $id, input: $input) {
+      id
+      nombre
+      existencia
+      precio
     }
   }
 `;
@@ -27,6 +39,7 @@ const EditarProducto = () => {
     },
   });
 
+  const [actualizarProducto] = useMutation(ACTUALIZAR_PRODUCTO);
   if (loading) return "Cargando...";
 
   const validationSchema = Yup.object({
@@ -40,9 +53,30 @@ const EditarProducto = () => {
       .positive("No se aceptan numeros negativos"),
   });
 
+  const actualizarInfoProducto = async (valores) => {
+    const { nombre, existencia, precio } = valores;
+    try {
+      const { data } = await actualizarProducto({
+        variables: {
+          id,
+          input: {
+            nombre,
+            existencia,
+            precio,
+          },
+        },
+      });
+      console.log(data);
+      //Redireccionar
+      Swal.fire("¡Actualiado!", "Producto actualizado exitosamente", "success");
+      router.push("/productos");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const { obtenerProducto } = data;
 
-  const actualizarInfoProducto = () => {};
   return (
     <Layout>
       <h1>Editar Producto</h1>
