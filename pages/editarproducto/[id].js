@@ -41,7 +41,9 @@ const EditarProducto = () => {
 
   const [actualizarProducto] = useMutation(ACTUALIZAR_PRODUCTO);
   if (loading) return "Cargando...";
-
+  if (!data) {
+    return "No se encontro el producto";
+  }
   const validationSchema = Yup.object({
     nombre: Yup.string().required("El nombre del Producto es obligatorio"),
     existencia: Yup.number()
@@ -66,9 +68,9 @@ const EditarProducto = () => {
           },
         },
       });
-      console.log(data);
-      //Redireccionar
+      // Mostrar mensaje de Actualizado
       Swal.fire("¡Actualiado!", "Producto actualizado exitosamente", "success");
+      //Redireccionar
       router.push("/productos");
     } catch (error) {
       console.log(error);
