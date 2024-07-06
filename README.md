@@ -1,1 +1,1 @@
-Parte Front CRM NextJs-GraphQL
+ Frontend CRM de cliente NextJs-GraphQL
