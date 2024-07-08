@@ -37,6 +37,7 @@ const PedidoState = ({ children }) => {
   return (
     <PedidoContext.Provider
       value={{
+        productos: state.productos,
         agregarCliente,
         agregarProducto,
       }}
