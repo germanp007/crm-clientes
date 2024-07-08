@@ -14,7 +14,7 @@ export default (state, action) => {
     case SELECCIONAR_PRODUCTO:
       return {
         ...state,
-        producto: [...producto, action.payload],
+        productos: action.payload,
       };
     case CANTIDAD_PRODUCTOS:
       return;
