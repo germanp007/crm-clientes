@@ -6,6 +6,7 @@ import AsignarCliente from "../components/pedidos/AsignarCliente";
 import PedidoContext from "../context/pedidos/PedidoContext";
 import AsignarProducto from "../components/pedidos/AsignarProducto";
 import ResumenPedido from "../components/pedidos/ResumenPedido";
+import Total from "../components/pedidos/Total";
 
 const NuevoPedido = () => {
   // Extraer el state y los funciones del context
@@ -20,6 +21,13 @@ const NuevoPedido = () => {
           <AsignarCliente />
           <AsignarProducto />
           <ResumenPedido />
+          <Total />
+          <button
+            type="buttom"
+            className="bg-gray-800 text-white rounded w-full mt-6 p-3 hover:bg-slate-500"
+          >
+            Registrar Pedido
+          </button>
         </div>
       </div>
     </Layout>
