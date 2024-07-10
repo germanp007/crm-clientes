@@ -27,10 +27,26 @@ const PedidoState = ({ children }) => {
     });
   };
 
-  const agregarProducto = (product) => {
+  const agregarProducto = (selectedProduct) => {
+    // console.log(selectedProduct);
+    let nuevoState;
+
+    if (state.productos.length > 0) {
+      nuevoState = selectedProduct.map((producto) => {
+        const nuevoObjeto = state.productos.find(
+          (productoState) => productoState.id === producto.id
+        );
+        return {
+          ...producto,
+          ...nuevoObjeto,
+        };
+      });
+    } else {
+      nuevoState = selectedProduct;
+    }
     dispatch({
       type: SELECCIONAR_PRODUCTO,
-      payload: product,
+      payload: nuevoState,
     });
   };
 
