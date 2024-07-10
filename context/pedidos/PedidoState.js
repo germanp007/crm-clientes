@@ -5,6 +5,7 @@ import {
   SELECCIONAR_CLIENTE,
   SELECCIONAR_PRODUCTO,
   CANTIDAD_PRODUCTOS,
+  ACTUALIZAR_TOTAL,
 } from "../../types";
 
 const PedidoState = ({ children }) => {
@@ -57,6 +58,11 @@ const PedidoState = ({ children }) => {
       payload: nuevoProducto,
     });
   };
+  const actualizarTotal = () => {
+    dispatch({
+      type: ACTUALIZAR_TOTAL,
+    });
+  };
   return (
     <PedidoContext.Provider
       value={{
@@ -64,6 +70,7 @@ const PedidoState = ({ children }) => {
         agregarCliente,
         agregarProducto,
         agregarCantidad,
+        actualizarTotal,
       }}
     >
       {children}

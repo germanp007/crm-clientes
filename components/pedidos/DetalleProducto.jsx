@@ -4,10 +4,14 @@ import PedidoContext from "../../context/pedidos/PedidoContext";
 const DetalleProducto = ({ producto }) => {
   const [cantidad, setCantidad] = useState(0);
   const pedidoContext = useContext(PedidoContext);
-  const { agregarCantidad } = pedidoContext;
+  const { agregarCantidad, actualizarTotal, productos } = pedidoContext;
   useEffect(() => {
     actualizarCantidad();
   }, [cantidad]);
+
+  useEffect(() => {
+    actualizarTotal();
+  }, [productos]);
   const actualizarCantidad = () => {
     const nuevoProducto = { ...producto, cantidad: Number(cantidad) };
     agregarCantidad(nuevoProducto);
