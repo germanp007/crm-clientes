@@ -27,8 +27,6 @@ const AsignarCliente = () => {
 
   const { data, loading, error } = useQuery(OBTENER_CLIENTES_USUARIOS);
 
-  console.log(data);
-
   useEffect(() => {
     agregarCliente(cliente);
   }, [cliente]);

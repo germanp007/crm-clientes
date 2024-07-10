@@ -12,7 +12,9 @@ const ResumenPedido = () => {
         3.- Ajusta las cantidades del Producto
       </p>
       {productos.length > 0 ? (
-        productos.map((producto) => <DetalleProducto producto={producto} />)
+        productos.map((producto) => (
+          <DetalleProducto producto={producto} key={producto.id} />
+        ))
       ) : (
         <div
           className="my-5 bg-white shadow-md px-5

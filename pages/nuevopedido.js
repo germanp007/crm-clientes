@@ -24,7 +24,7 @@ const NuevoPedido = () => {
           <Total />
           <button
             type="buttom"
-            className="bg-gray-800 text-white rounded w-full mt-6 p-3 hover:bg-slate-500"
+            className={`bg-gray-800 text-white rounded w-full mt-6 p-3 hover:bg-slate-500`}
           >
             Registrar Pedido
           </button>
