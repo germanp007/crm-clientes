@@ -30,7 +30,8 @@ export default (state, action) => {
       return {
         ...state,
         total: state.productos.reduce(
-          (acc, product) => ((acc += product.precio * product.cantidad), 0)
+          (acc, product) => (acc += product.precio * product.cantidad),
+          0
         ),
       };
 
