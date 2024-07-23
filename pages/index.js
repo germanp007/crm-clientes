@@ -24,7 +24,7 @@ export default function Home() {
   if (loading) {
     return <p>Cargando...</p>;
   }
-  if (!data.obtenerClienteVendedor) {
+  if (!data || !data.obtenerClienteVendedor) {
     client.clearStore();
     return router.push("/login");
   }

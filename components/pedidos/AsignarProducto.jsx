@@ -20,18 +20,19 @@ const AsignarProducto = () => {
   // Acceder al Estado Global
 
   const pedidosContext = useContext(PedidoContext);
-  const { agregarProducto } = pedidosContext;
+  const { agregarProducto, productos } = pedidosContext;
 
   //Obtener query de la Base de Datos
   const { data, loading, error } = useQuery(OBTENER_PRODUCTOS);
-
+  // console.log(products);
+  console.log(productos);
   useEffect(() => {
     // TODO: Funcion para pasar a PedidosState
     agregarProducto(products);
   }, [products]);
-  //   agregarProducto(products);
-
+  // console.log(products);
   const seleccionarProducto = (product) => {
+    // agregarProducto(product);
     setProducts(product);
   };
 

@@ -12,7 +12,14 @@ const NuevoPedido = () => {
   // Extraer el state y los funciones del context
 
   const pedidoContext = useContext(PedidoContext);
-
+  const { cliente, productos, total } = pedidoContext;
+  const validarPedido = () => {
+    return !productos.every((producto) => producto.cantidad > 0) ||
+      total === 0 ||
+      cliente.legth === 0
+      ? "opacity-50 cursor-not-allowed"
+      : "";
+  };
   return (
     <Layout>
       <h1 className="text-2xl text-gray-800 font-light">Crear Nuevo Pedido</h1>
@@ -24,7 +31,7 @@ const NuevoPedido = () => {
           <Total />
           <button
             type="buttom"
-            className={`bg-gray-800 text-white rounded w-full mt-6 p-3 hover:bg-slate-500`}
+            className={`bg-gray-800 text-white rounded w-full mt-6 p-3 hover:bg-slate-500 ${validarPedido()}`}
           >
             Registrar Pedido
           </button>
