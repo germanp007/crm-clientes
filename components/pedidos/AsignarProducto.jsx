@@ -25,7 +25,6 @@ const AsignarProducto = () => {
   //Obtener query de la Base de Datos
   const { data, loading, error } = useQuery(OBTENER_PRODUCTOS);
   // console.log(products);
-  console.log(productos);
   useEffect(() => {
     // TODO: Funcion para pasar a PedidosState
     agregarProducto(products);
