@@ -1,6 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Layout from "../components/Layout";
 import AsignarCliente from "../components/pedidos/AsignarCliente";
+
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 // Context de Pedido
 import PedidoContext from "../context/pedidos/PedidoContext";
@@ -22,6 +25,8 @@ const NuevoPedido = () => {
 
   const pedidoContext = useContext(PedidoContext);
   const { cliente, productos, total } = pedidoContext;
+  const [mensaje, setMensaje] = useState(null);
+  const router = useRouter();
 
   // Mutation para crear nuevo pedido
 
@@ -33,16 +38,30 @@ const NuevoPedido = () => {
       ({ __typename, existencia, ...product }) => product
     );
     console.log(pedido);
-    // try {
-    //   const { data } = await nuevoPedido({
-    //     variables: {
-    //       cliente: cliente.id,
-    //       total,
-    //     },
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const { data } = await nuevoPedido({
+        variables: {
+          input: { cliente: cliente.id, total, pedido },
+        },
+      });
+      console.log(data);
+
+      // Redireccionar a Pedidos
+      router.push("/pedidos");
+
+      // Mostrar Alerta
+
+      Swal.fire(
+        "Pedido creado",
+        "El pedido se ha creado correctamente",
+        "success"
+      );
+    } catch (error) {
+      setMensaje(error.message);
+      setTimeout(() => {
+        setMensaje(null);
+      }, 3000);
+    }
   };
 
   const validarPedido = () => {
@@ -52,9 +71,18 @@ const NuevoPedido = () => {
       ? "opacity-50 cursor-not-allowed"
       : "";
   };
+
+  const mostrarMensaje = () => {
+    return (
+      <div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+        <p className="text-red-700">{mensaje}</p>
+      </div>
+    );
+  };
   return (
     <Layout>
       <h1 className="text-2xl text-gray-800 font-light">Crear Nuevo Pedido</h1>
+      {mensaje && mostrarMensaje()}
       <div className="w-1/2 mx-auto mt-20">
         <div className="w-full">
           <AsignarCliente />
