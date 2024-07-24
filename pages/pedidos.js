@@ -17,6 +17,8 @@ const OBTENER_PEDIDOS = gql`
         id
         nombre
         apellido
+        empresa
+        telefono
         email
       }
       vendedor
