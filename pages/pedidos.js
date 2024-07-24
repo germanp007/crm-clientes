@@ -13,7 +13,12 @@ const OBTENER_PEDIDOS = gql`
         nombre
       }
       total
-      cliente
+      cliente {
+        id
+        nombre
+        apellido
+        email
+      }
       vendedor
       estado
     }
