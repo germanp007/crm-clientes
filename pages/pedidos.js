@@ -33,6 +33,7 @@ const Pedidos = () => {
   if (loading) return "Cargando...";
 
   const { obtenerPedidosVendedor } = data;
+  console.log(obtenerPedidosVendedor);
   return (
     <div>
       <Layout>

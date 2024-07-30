@@ -1,4 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+
+const ACTUALIZAR_ESTADO_PEDIDO = gql`
+  mutation actualizarPedido($id: ID!, $input: PedidoInput) {
+    actualizarPedido(id: $id, input: $input) {
+      estado
+    }
+  }
+`;
 
 const Pedido = ({ pedido }) => {
   const {
@@ -9,6 +18,10 @@ const Pedido = ({ pedido }) => {
   } = pedido;
   const [estadoPedido, setEstadoPedido] = useState(estado);
   const [clase, setClase] = useState("");
+
+  // MUTATION
+  const [actualizarPedido] = useMutation(ACTUALIZAR_ESTADO_PEDIDO);
+
   useEffect(() => {
     if (estadoPedido) {
       setEstadoPedido(estadoPedido);
@@ -16,6 +29,7 @@ const Pedido = ({ pedido }) => {
     agregarClase();
   }, [estadoPedido]);
 
+  // Agregar Estilo dependiendo del Estado del PEDIDO
   const agregarClase = () => {
     if (estadoPedido === "PENDIENTE") {
       setClase("border-yellow-500");
@@ -25,7 +39,19 @@ const Pedido = ({ pedido }) => {
       setClase("border-red-800");
     }
   };
-
+  const cambioEstadoPedido = async (estado) => {
+    try {
+      const { data } = await actualizarPedido({
+        variables: {
+          id,
+          input: { estado: estado, cliente: pedido.cliente.id, total },
+        },
+      });
+      setEstadoPedido(data.actualizarPedido.estado);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div
       className={`${clase} border-t-4 mt-4 bg-white rounded p-6 md:grid md: grid-cols-2 md:gap-4 shadow-lg`}
@@ -98,10 +124,11 @@ const Pedido = ({ pedido }) => {
           <select
             className="mt-2 appearance-none bg-blue-600 border border-blue-600 text-white p-2 text-center rounded leading-tight focus:outline-none focus:bg-blue-600 focus:border-blue-500 uppercase text-xs font-bold"
             value={estadoPedido}
+            onChange={(e) => cambioEstadoPedido(e.target.value)}
           >
-            <option value="completado">COMPLETADO</option>
-            <option value="pendiente">PENDIENTE</option>
-            <option value="cancelado">CANCELADO</option>
+            <option value="COMPLETADO">COMPLETADO</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="CANCELADO">CANCELADO</option>
           </select>
         </div>
       </div>
@@ -109,7 +136,7 @@ const Pedido = ({ pedido }) => {
         <div>
           <h2 className="text-grey-800 font-bold mt-2">Resumen del Pedido:</h2>
           {pedido.pedido.map((articulo) => (
-            <div>
+            <div key={articulo.id}>
               <p className="text-sm text-gray-600">
                 Producto: {articulo.nombre}
               </p>
