@@ -1,9 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-
+import Swal from "sweetalert2";
 const ACTUALIZAR_ESTADO_PEDIDO = gql`
   mutation actualizarPedido($id: ID!, $input: PedidoInput) {
     actualizarPedido(id: $id, input: $input) {
+      estado
+    }
+  }
+`;
+
+const ELIMINAR_PEDIDO = gql`
+  mutation eliminarPedido($id: ID!) {
+    eliminarPedido(id: $id)
+  }
+`;
+
+const OBTENER_PEDIDOS = gql`
+  query ObtenerPedidosVendedor {
+    obtenerPedidosVendedor {
+      id
+      pedido {
+        id
+        cantidad
+        nombre
+      }
+      total
+      cliente {
+        id
+        nombre
+        apellido
+        empresa
+        telefono
+        email
+      }
+      vendedor
       estado
     }
   }
@@ -21,6 +51,24 @@ const Pedido = ({ pedido }) => {
 
   // MUTATION
   const [actualizarPedido] = useMutation(ACTUALIZAR_ESTADO_PEDIDO);
+  const [eliminarPedido] = useMutation(ELIMINAR_PEDIDO, {
+    update(cache) {
+      // Obtener una copia del objeto cache
+      const { obtenerPedidosVendedor } = cache.readQuery({
+        query: OBTENER_PEDIDOS,
+      });
+      console.log(obtenerPedidosVendedor);
+      // Reescribir cache
+      cache.writeQuery({
+        query: OBTENER_PEDIDOS,
+        data: {
+          obtenerPedidosVendedor: obtenerPedidosVendedor.filter(
+            (pedido) => pedido.id !== id
+          ),
+        },
+      });
+    },
+  });
 
   useEffect(() => {
     if (estadoPedido) {
@@ -51,6 +99,43 @@ const Pedido = ({ pedido }) => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const eliminarPedidoUi = async (id) => {
+    Swal.fire({
+      title: "¿Deseas eliminar este Pedido?",
+      text: "¡Esta acción no se puede deshacer!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, Eliminar!",
+    }).then(async (result) => {
+      if (result.value) {
+        try {
+          // Eliminar por ID
+          const { data } = await eliminarPedido({
+            variables: { id: id },
+          });
+          console.log(data);
+          // Mensaje de eliminado
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "Pedido eliminado",
+            icon: "success",
+          });
+        } catch (error) {
+          console.log(error.message);
+          Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al eliminar el cliente.",
+            icon: "error",
+          });
+        }
+      } else {
+        console.log("no se elimino", id);
+      }
+    });
   };
   return (
     <div
@@ -152,7 +237,10 @@ const Pedido = ({ pedido }) => {
             Total a Pagar:
             <span className="font-bold text-gray-800"> ${total}</span>
           </p>
-          <button className="uppercase text-xs font-bold flex gap-2 item-center mt-4 bg-red-800 px-5 py-2 text-white rounded leading-tight">
+          <button
+            className="uppercase text-xs font-bold flex gap-2 item-center mt-4 bg-red-800 px-5 py-2 text-white rounded leading-tight"
+            onClick={() => eliminarPedidoUi(id)}
+          >
             Eliminar Pedido
             <svg
               xmlns="http://www.w3.org/2000/svg"
