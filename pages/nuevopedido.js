@@ -26,7 +26,7 @@ const NuevoPedido = () => {
   const pedidoContext = useContext(PedidoContext);
   const { cliente, productos, total } = pedidoContext;
   const [mensaje, setMensaje] = useState(null);
-  const router = useRouter();
+  // const router = useRouter();
 
   // Mutation para crear nuevo pedido
 
@@ -47,8 +47,9 @@ const NuevoPedido = () => {
       console.log(data);
 
       // Redireccionar a Pedidos
-      router.push("/pedidos");
-
+      setTimeout(() => {
+        window.location.href = "/pedidos";
+      }, 1000);
       // Mostrar Alerta
 
       Swal.fire(

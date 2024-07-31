@@ -2,6 +2,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
 import Pedido from "../components/Pedido";
+import { useEffect } from "react";
 
 const OBTENER_PEDIDOS = gql`
   query ObtenerPedidosVendedor {
@@ -33,7 +34,7 @@ const Pedidos = () => {
   if (loading) return "Cargando...";
 
   const { obtenerPedidosVendedor } = data;
-  console.log(obtenerPedidosVendedor);
+
   return (
     <div>
       <Layout>

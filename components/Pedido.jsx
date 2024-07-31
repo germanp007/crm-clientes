@@ -71,9 +71,9 @@ const Pedido = ({ pedido }) => {
   });
 
   useEffect(() => {
-    if (estadoPedido) {
-      setEstadoPedido(estadoPedido);
-    }
+    // if (estadoPedido) {
+    //   setEstadoPedido(estadoPedido);
+    // }
     agregarClase();
   }, [estadoPedido]);
 
@@ -96,6 +96,7 @@ const Pedido = ({ pedido }) => {
         },
       });
       setEstadoPedido(data.actualizarPedido.estado);
+      window.location.reload();
     } catch (error) {
       console.log(error.message);
     }
