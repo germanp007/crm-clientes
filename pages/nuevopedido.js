@@ -10,12 +10,36 @@ import PedidoContext from "../context/pedidos/PedidoContext";
 import AsignarProducto from "../components/pedidos/AsignarProducto";
 import ResumenPedido from "../components/pedidos/ResumenPedido";
 import Total from "../components/pedidos/Total";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
 const NUEVO_PEDIDO = gql`
   mutation NuevoPedido($input: PedidoInput) {
     nuevoPedido(input: $input) {
       id
+    }
+  }
+`;
+
+const OBTENER_PEDIDOS = gql`
+  query ObtenerPedidosVendedor {
+    obtenerPedidosVendedor {
+      id
+      pedido {
+        id
+        cantidad
+        nombre
+      }
+      total
+      cliente {
+        id
+        nombre
+        apellido
+        empresa
+        telefono
+        email
+      }
+      vendedor
+      estado
     }
   }
 `;
@@ -26,11 +50,23 @@ const NuevoPedido = () => {
   const pedidoContext = useContext(PedidoContext);
   const { cliente, productos, total } = pedidoContext;
   const [mensaje, setMensaje] = useState(null);
-  // const router = useRouter();
+  const router = useRouter();
 
   // Mutation para crear nuevo pedido
 
-  const [nuevoPedido] = useMutation(NUEVO_PEDIDO);
+  const [nuevoPedido] = useMutation(NUEVO_PEDIDO, {
+    update(cache) {
+      const { obtenerPedidosVendedor } = cache.readQuery({
+        query: OBTENER_PEDIDOS,
+      });
+      cache.writeQuery({
+        query: OBTENER_PEDIDOS,
+        data: {
+          obtenerPedidosVendedor: [...obtenerPedidosVendedor, nuevoPedido],
+        },
+      });
+    },
+  });
 
   const crearNuevoPedido = async () => {
     // Remover lo no deseado de productos
@@ -47,9 +83,7 @@ const NuevoPedido = () => {
       console.log(data);
 
       // Redireccionar a Pedidos
-      setTimeout(() => {
-        window.location.href = "/pedidos";
-      }, 1000);
+      router.push("/pedidos");
       // Mostrar Alerta
 
       Swal.fire(
