@@ -55,7 +55,7 @@ const NuevoPedido = () => {
   // Mutation para crear nuevo pedido
 
   const [nuevoPedido] = useMutation(NUEVO_PEDIDO, {
-    update(cache) {
+    update(cache, { data: { nuevoPedido } }) {
       const { obtenerPedidosVendedor } = cache.readQuery({
         query: OBTENER_PEDIDOS,
       });
