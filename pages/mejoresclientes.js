@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Layout from "../components/Layout";
+import { gql, useQuery } from "@apollo/client";
 import {
   BarChart,
   Bar,
@@ -11,22 +12,21 @@ import {
   Legend,
   // ResponsiveContainer,
 } from "recharts";
-import { gql, useQuery } from "@apollo/client";
-
-const MEJORES_VENDEDORES = gql`
-  query MejoresVendedores {
-    mejoresVendedores {
-      vendedor {
+const MEJORES_CLIENTES = gql`
+  query MejoresClientes {
+    mejoresClientes {
+      total
+      cliente {
         nombre
         apellido
       }
-      total
     }
   }
 `;
-const MejoresVendedores = () => {
+
+const MejoresClientes = () => {
   const { data, loading, error, startPolling, stopPolling } =
-    useQuery(MEJORES_VENDEDORES);
+    useQuery(MEJORES_CLIENTES);
 
   useEffect(() => {
     startPolling(1000);
@@ -36,43 +36,28 @@ const MejoresVendedores = () => {
   }, [startPolling, stopPolling]);
 
   if (loading) return "Cargando...";
-  const { mejoresVendedores } = data;
-  const graphicVendedor = [];
 
-  mejoresVendedores.map((vendedor, index) => {
-    /* 
-    [
-      {
-        "__typename": "TopVendedores",
-        "vendedor": [
-          {
-            "__typename": "Usuario", <=== mejoresVendedores
-            "nombre": "German",
-            "apellido": "Pinto"
-          }
-                     ],
-        "total": 3640
-      }
-    ] 
+  const { mejoresClientes } = data;
 
-    */
+  const graphicClientes = [];
 
-    // Del Objeto extraemos los datos q necesitamos
-    const { __typename, ...datosVendedor } = vendedor.vendedor[0];
-    //Agregamos los datos del Vendedor q extraemos al array graphicVendedor
-    graphicVendedor[index] = {
-      ...datosVendedor,
-      total: vendedor.total,
+  mejoresClientes.map((client, index) => {
+    const { __typename, ...datosCliente } = client.cliente[0];
+
+    graphicClientes[index] = {
+      ...datosCliente,
+      total: client.total,
     };
   });
+  console.log(graphicClientes);
   return (
     <Layout>
-      <h1 className="text-2xl text-gray-800 font-light">Mejores Vendedores</h1>
+      <h1 className="text-2xl text-gray-800 font-light">Mejores Clientes</h1>
       <div className="mt-10 flex justify-center">
         <BarChart
           width={600}
           height={400}
-          data={graphicVendedor}
+          data={graphicClientes}
           margin={{
             top: 5,
             right: 30,
@@ -96,4 +81,4 @@ const MejoresVendedores = () => {
   );
 };
 
-export default MejoresVendedores;
+export default MejoresClientes;
