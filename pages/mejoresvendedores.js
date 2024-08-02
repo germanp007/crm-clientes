@@ -61,7 +61,7 @@ const MejoresVendedores = () => {
     const { __typename, ...datosVendedor } = vendedor.vendedor[0];
     //Agregamos los datos del Vendedor q extraemos al array graphicVendedor
     graphicVendedor[index] = {
-      ...datosVendedor,
+      nombre: datosVendedor.nombre + " " + datosVendedor.apellido.slice(0, 1),
       total: vendedor.total,
     };
   });

@@ -45,7 +45,7 @@ const MejoresClientes = () => {
     const { __typename, ...datosCliente } = client.cliente[0];
 
     graphicClientes[index] = {
-      ...datosCliente,
+      nombre: datosCliente.nombre + " " + datosCliente.apellido.slice(0, 1),
       total: client.total,
     };
   });
