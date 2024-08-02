@@ -39,13 +39,6 @@ const Sidebar = () => {
         <ul className="text-white flex flex-col gap-3">
           <li
             className={
-              router.pathname === "/mejoresclientes" ? "bg-blue-800 p-3" : "p-3"
-            }
-          >
-            <Link href="/mejoresclientes">Mejores Clientes</Link>
-          </li>
-          <li
-            className={
               router.pathname === "/mejoresvendedores"
                 ? "bg-blue-800 p-3"
                 : "p-3"
@@ -53,6 +46,13 @@ const Sidebar = () => {
           >
             {" "}
             <Link href="/mejoresvendedores">Mejores Vendedores</Link>
+          </li>
+          <li
+            className={
+              router.pathname === "/mejoresclientes" ? "bg-blue-800 p-3" : "p-3"
+            }
+          >
+            <Link href="/mejoresclientes">Mejores Clientes</Link>
           </li>
         </ul>
       </nav>
