@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
 import {
   BarChart,
@@ -25,7 +25,15 @@ const MEJORES_VENDEDORES = gql`
   }
 `;
 const MejoresVendedores = () => {
-  const { data, loading, error } = useQuery(MEJORES_VENDEDORES);
+  const { data, loading, error, startPolling, stopPolling } =
+    useQuery(MEJORES_VENDEDORES);
+
+  useEffect(() => {
+    startPolling(1000);
+    return () => {
+      stopPolling();
+    };
+  }, [startPolling, stopPolling]);
 
   if (loading) return "Cargando...";
   const { mejoresVendedores } = data;
