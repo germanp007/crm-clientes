@@ -39,22 +39,25 @@ export default function Home() {
         >
           Nuevo Cliente
         </Link>
-        <table className="table-auto shadow-md mt-10 w-full w-lg">
-          <thead className="bg-gray-800">
-            <tr className="text-white ">
-              <th className="w-1/5 py-2 ">Nombre</th>
-              <th className="w-1/5 py-2 ">Empresa</th>
-              <th className="w-1/5 py-2">Email</th>
-              <th className="w-1/5 py-2">Eliminar</th>
-              <th className="w-1/5 py-2">Editar</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white">
-            {data?.obtenerClienteVendedor?.map((cliente) => (
-              <Cliente key={cliente.id} cliente={cliente} />
-            ))}
-          </tbody>
-        </table>
+
+        <div className="overflow-x-scroll">
+          <table className="table-auto shadow-md mt-10 w-full w-lg">
+            <thead className="bg-gray-800">
+              <tr className="text-white ">
+                <th className="w-1/5 py-2 ">Nombre</th>
+                <th className="w-1/5 py-2 ">Empresa</th>
+                <th className="w-1/5 py-2">Email</th>
+                <th className="w-1/5 py-2">Eliminar</th>
+                <th className="w-1/5 py-2">Editar</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {data?.obtenerClienteVendedor?.map((cliente) => (
+                <Cliente key={cliente.id} cliente={cliente} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Layout>
     </div>
   );

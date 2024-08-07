@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  // ResponsiveContainer,
+  ResponsiveContainer,
 } from "recharts";
 import { gql, useQuery } from "@apollo/client";
 
@@ -69,28 +69,30 @@ const MejoresVendedores = () => {
     <Layout>
       <h1 className="text-2xl text-gray-800 font-light">Mejores Vendedores</h1>
       <div className="mt-10 flex justify-center">
-        <BarChart
-          width={600}
-          height={400}
-          data={graphicVendedor}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="nombre" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar
-            dataKey="total"
-            fill="#3182CE"
-            activeBar={<Rectangle fill="blue" stroke="blue" />}
-          />
-        </BarChart>
+        <ResponsiveContainer width={"99%"} height={550}>
+          <BarChart
+            width={600}
+            height={400}
+            data={graphicVendedor}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="nombre" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey="total"
+              fill="#3182CE"
+              activeBar={<Rectangle fill="blue" stroke="blue" />}
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </Layout>
   );

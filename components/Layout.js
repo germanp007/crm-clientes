@@ -17,11 +17,13 @@ const Layout = ({ children }) => {
         </div>
       ) : (
         <div className="bg-gray-200 w-full min-h-screen flex">
-          <Sidebar />
-          <main className="sm:w-2/3 lg:w-4/5 min-h-screen p-5">
-            <Header />
-            {children}
-          </main>
+          <div className="sm:flex min-h-screen  w-full">
+            <Sidebar />
+            <main className="sm:w-2/3 lg:w-4/5 min-h-screen p-5">
+              <Header />
+              {children}
+            </main>
+          </div>
         </div>
       )}
     </>
